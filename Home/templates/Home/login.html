@@ -1,0 +1,108 @@
+{% extends "Home/base.html" %}
+
+{% block start %}
+
+<style>
+    /* Input Fields Styling */
+    .login-input {
+        height: 55px;
+        border-radius: 30px;
+        padding-left: 25px;
+        border: 1px solid #e1e1e1;
+        background: #f8f9fa;
+        font-size: 15px;
+        transition: all 0.3s ease;
+    }
+    .login-input:focus {
+        background: #ffffff;
+        border-color: #6c5ce7;
+        box-shadow: 0 5px 15px rgba(108, 92, 231, 0.15);
+        outline: none;
+    }
+
+    /* Button Styling (Gradient & Shadow) */
+    .btn-premium {
+        background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+        border: none;
+        color: white;
+        height: 55px;
+        border-radius: 30px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-premium:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+        color: white;
+    }
+    .btn-premium:active {
+        transform: translateY(-1px);
+    }
+
+    /* Image Section */
+    .bg-login-image {
+        /* Ek High Quality Professional Workspace Image */
+        background-image: url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    
+    /* Image Overlay (Dark Gradient) */
+    .image-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
+    }
+</style>
+
+<div class="container-fluid p-0">
+    <div class="row no-gutters min-vh-100">
+        
+        <div class="col-md-6 col-lg-5 d-flex align-items-center justify-content-center bg-white">
+            <div class="w-100 py-5 px-4 px-sm-5" style="max-width: 500px;">
+                
+                <div class="mb-5">
+                    <span class="text-uppercase text-primary font-weight-bold small letter-spacing-2">Welcome Back</span>
+                    <h1 class="font-weight-bold text-dark display-4 mt-2">Sign In</h1>
+                    <p class="text-muted mt-2">Welcome back! Please enter your details.</p>
+                </div>
+
+                <div class="form-validate">
+                    <div class="form-group mb-4">
+                        <label class="font-weight-bold text-uppercase small text-muted ml-3" for="loginUsername">Email or Username</label>
+                        <input class="form-control login-input" name="loginUsername" id="loginUsername" type="email" placeholder="e.g. sufill@example.com" autocomplete="off" required>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label class="font-weight-bold text-uppercase small text-muted ml-3" for="loginPassword">Password</label>
+                        <input class="form-control login-input" name="loginPassword" id="loginPassword" placeholder="••••••••" type="password" required>
+                    </div>
+                    
+                    <button class="btn btn-premium btn-block mt-5 shadow-sm" onclick="login()">
+                        LOG IN <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    
+                    <div class="text-center mt-4">
+                        <p class="text-muted small mb-0">Don't have an account?</p>
+                        <a href="{% url 'register_view'%}" class="text-primary font-weight-bold">Create free account</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-7 d-none d-md-block bg-login-image">
+            <div class="image-overlay d-flex align-items-end pb-5 px-5">
+                <div class="text-white mb-5">
+                    <h2 class="font-weight-bold display-5">"Design is intelligence made visible."</h2>
+                    <p class="lead opacity-70 mt-2">— Zina Moore</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

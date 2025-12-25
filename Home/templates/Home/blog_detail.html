@@ -1,0 +1,91 @@
+{% extends "Home/base.html" %}
+
+{% block start %}
+
+<style>
+    .blog-header-img {
+        width: 100%;
+        height: 450px;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    
+    .blog-paper {
+        background-color: #ffffff;
+        padding: 40px 50px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        margin-top: -80px; /* Overlap effect */
+        position: relative;
+        z-index: 10;
+    }
+    
+    .blog-content {
+        font-size: 1.15rem;
+        line-height: 1.9;
+        color: #2d3436;
+        font-family: 'Georgia', serif; /* Serif font for better reading */
+    }
+    
+    /* Responsive Fixes */
+    @media (max-width: 768px) {
+        .blog-header-img { height: 300px; }
+        .blog-paper { padding: 25px; margin-top: -50px; }
+    }
+</style>
+
+<div class="container py-5">
+    
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-10">
+            <a href="{% url 'home' %}" class="btn btn-link text-muted px-0 mb-3 font-weight-bold text-decoration-none">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Home
+            </a>
+            
+            <h1 class="font-weight-bold display-4 text-dark mb-3">{{blog_obj.title}}</h1>
+            
+            <div class="d-flex align-items-center text-muted mb-4">
+                <div class="d-flex align-items-center mr-4">
+                    <div class="btn btn-light rounded-circle p-2 mr-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="fas fa-user text-primary"></i>
+                    </div>
+                    <span class="font-weight-bold text-dark">{{blog_obj.user.username}}</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="far fa-calendar-alt mr-2"></i>
+                    <span>{{blog_obj.created_at|date:"M d, Y"}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <img class="blog-header-img mb-5" src="/media/{{blog_obj.image}}" alt="Blog Image">
+        </div>
+    </div>
+
+    <div class="row justify-content-center pb-5">
+        <div class="col-lg-9">
+            <div class="blog-paper">
+                <div class="text-content blog-content">
+                    {{blog_obj.content|safe}}
+                </div>
+                
+                <hr class="my-5">
+                <div class="text-center">
+                    <p class="text-muted small font-weight-bold mb-3">SHARE THIS STORY</p>
+                    <div>
+                        <button class="btn btn-outline-primary btn-sm rounded-circle mx-1" style="width: 40px; height: 40px;"><i class="fab fa-facebook-f"></i></button>
+                        <button class="btn btn-outline-info btn-sm rounded-circle mx-1" style="width: 40px; height: 40px;"><i class="fab fa-twitter"></i></button>
+                        <button class="btn btn-outline-success btn-sm rounded-circle mx-1" style="width: 40px; height: 40px;"><i class="fab fa-whatsapp"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

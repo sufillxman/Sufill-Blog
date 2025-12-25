@@ -1,0 +1,146 @@
+{% extends "Home/base.html" %}
+
+{% block start %}
+
+<style>
+    /* Styling wahi same hai */
+    .login-input {
+        height: 55px;
+        border-radius: 30px;
+        padding-left: 25px;
+        border: 1px solid #e1e1e1;
+        background: #f8f9fa;
+        font-size: 15px;
+        transition: all 0.3s ease;
+    }
+    .login-input:focus {
+        background: #ffffff;
+        border-color: #0984e3;
+        box-shadow: 0 5px 15px rgba(9, 132, 227, 0.15);
+        outline: none;
+    }
+    .btn-premium {
+        background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+        border: none;
+        color: white;
+        height: 55px;
+        border-radius: 30px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-premium:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(9, 132, 227, 0.3);
+        color: white;
+    }
+    .bg-register-image {
+        background-image: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    .image-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
+    }
+</style>
+
+<div class="container-fluid p-0">
+    <div class="row no-gutters min-vh-100">
+        
+        <div class="col-md-6 col-lg-5 d-flex align-items-center justify-content-center bg-white">
+            <div class="w-100 py-5 px-4 px-sm-5" style="max-width: 500px;">
+                
+                <div class="mb-5">
+                    <span class="text-uppercase text-info font-weight-bold small letter-spacing-2">Start Journey</span>
+                    <h1 class="font-weight-bold text-dark display-4 mt-2">Join Us</h1>
+                    <p class="text-muted mt-2">Create your free account to start blogging.</p>
+                </div>
+
+                <div class="form-validate">
+                    <div class="form-group mb-4">
+                        <label class="font-weight-bold text-uppercase small text-muted ml-3">Choose Username</label>
+                        <input class="form-control login-input" id="regUsername" type="text" placeholder="e.g. sufill_writer" autocomplete="off" required>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label class="font-weight-bold text-uppercase small text-muted ml-3">Create Password</label>
+                        <input class="form-control login-input" id="regPassword" placeholder="••••••••" type="password" required>
+                    </div>
+                    
+                    <button class="btn btn-premium btn-block mt-5 shadow-sm" onclick="register()">
+                        CREATE ACCOUNT
+                    </button>
+                    
+                    <div class="text-center mt-4">
+                        <p class="text-muted small mb-0">Already have an account?</p>
+                        <a href="{% url 'login_view'%}" class="text-info font-weight-bold">Login here</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-lg-7 d-none d-md-block bg-register-image">
+            <div class="image-overlay d-flex align-items-end pb-5 px-5">
+                <div class="text-white mb-5">
+                    <h2 class="font-weight-bold display-5">"Start writing, no matter what."</h2>
+                    <p class="lead opacity-70 mt-2">— Louis L'Amour</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function register(){
+        // Ab IDs match karengi HTML se
+        var username = document.getElementById('regUsername').value;
+        var password = document.getElementById('regPassword').value;
+        var csrf = document.getElementById('csrf').value;
+
+        if(username == '' || password == ''){
+            alert('You must enter both username and password');
+            return;
+        }
+
+        var data = {
+            'username' : username,
+            'password' : password
+        }
+
+        fetch('/api/register_api/' , {
+            method : 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken' : csrf,
+            },
+            body : JSON.stringify(data)
+        })
+        .then(result => result.json())
+        .then(response => {
+            console.log(response);
+
+            if(response.status == 200){
+                 alert("Account Created Successfully! Please Login.");
+                 window.location.href = '/login/';
+            }
+            else{
+                if(response.data && response.data.username){
+                    alert(response.data.username[0]); 
+                } else {
+                    alert(response.message);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Something went wrong! Check Console.");
+        });
+    }
+</script>
+
+{% endblock %}

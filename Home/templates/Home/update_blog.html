@@ -1,0 +1,126 @@
+{% extends "Home/base.html" %}
+
+{% block start %}
+
+<style>
+    /* Card Styling */
+    .editor-card {
+        border: none;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        border-radius: 20px;
+    }
+
+    /* Title Input (Headline Style) */
+    .title-input {
+        font-size: 2rem;
+        font-weight: 700;
+        border: none;
+        border-bottom: 2px solid #f1f1f1;
+        border-radius: 0;
+        padding: 15px 0;
+        background: transparent;
+        color: #2d3436;
+    }
+    .title-input:focus {
+        box-shadow: none;
+        border-color: #00b894; /* Green for Update */
+        background: transparent;
+    }
+
+    /* Image Input Styling */
+    .image-upload-box {
+        background-color: #f8f9fa;
+        border: 2px dashed #dfe6e9;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    .image-upload-box:hover {
+        border-color: #00b894;
+        background-color: #f1f2f6;
+    }
+    .form-control-file {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+    
+    /* Submit Button (Green Gradient for Save) */
+    .btn-save {
+        background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        border: none;
+        color: white;
+        font-weight: 600;
+        transition: transform 0.2s;
+    }
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 184, 148, 0.3);
+        color: white;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="font-weight-bold text-dark mb-1">Edit Story</h2>
+                    <p class="text-muted small mb-0">Update your content and save changes.</p>
+                </div>
+                <a href="{% url 'see_blog' %}" class="btn btn-outline-secondary rounded-pill px-4 shadow-sm">
+                    <i class="fas fa-times mr-2"></i> Cancel
+                </a>
+            </div>
+
+            <div class="card editor-card bg-white">
+                <div class="card-body p-5">
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="form-group mb-5">
+                            <label class="text-uppercase text-muted small font-weight-bold spacing-1">Edit Title</label>
+                            <input type="text" value="{{blog_obj.title}}" class="form-control title-input" placeholder="Enter title" name="title">
+                        </div>
+
+                        <div class="form-group mb-5">
+                            <label class="text-uppercase text-muted small font-weight-bold spacing-1">Update Cover Image</label>
+                            <div class="image-upload-box">
+                                <i class="fas fa-camera fa-3x text-muted mb-3"></i>
+                                <h6 class="font-weight-bold text-dark">Click to change cover image</h6>
+                                <p class="text-muted small mb-0">Leave empty to keep current image</p>
+                                <input type="file" name="image" class="form-control-file">
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-5">
+                            <label class="text-uppercase text-muted small font-weight-bold spacing-1">Content</label>
+                            <div class="mt-2">
+                                {{form.media}}
+                                {{form.as_p}}
+                            </div>
+                        </div>
+
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-save btn-lg rounded-pill px-5 shadow-sm">
+                                Save Changes <i class="fas fa-save ml-2"></i>
+                            </button>
+                        </div>
+
+                    </form>
+                    </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

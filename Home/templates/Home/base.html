@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sufill Blog | Share Your Story</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A professional blog by Sufill">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/nouislider.css' %}">
+    <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/default.css' %}" id="theme-stylesheet">
+    <link rel="stylesheet" href="{% static 'css/all.css' %}">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 80px; /* Navbar height fix */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        h1, h2, h3, h4, h5 { font-family: 'Playfair Display', serif; }
+
+        /* Navbar Styling */
+        .navbar {
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .navbar-brand h3 {
+            font-weight: 700;
+            color: #2d3436;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        /* Buttons Styling */
+        .btn-rounded { border-radius: 50px; }
+        .shadow-sm { box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important; }
+        
+        /* Footer Styling */
+        footer { margin-top: auto; background-color: #2d3436; color: #fff; }
+    </style>
+
+    <script src="{% static 'js/main.js' %}"></script>
+</head>
+
+<body>
+    
+    <input type="hidden" id="csrf" value="{{csrf_token}}">
+    
+    <header class="header">
+      <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-white py-3">
+        <div class="container">
+            
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <i class="fas fa-feather-alt text-primary mr-2"></i>
+                <h3>Sufill Blog</h3>
+            </a>
+          
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav ml-auto align-items-center">
+                    
+                    {% if request.user.is_authenticated %}
+                        
+                        <li class="nav-item mr-3 d-none d-lg-block">
+                            <span class="text-muted small">Welcome, <strong>{{request.user.username}}</strong></span>
+                        </li>
+
+                        <li class="nav-item mt-3 mt-lg-0 ml-lg-2">
+                            <a class="btn btn-primary btn-sm btn-rounded px-4 shadow-sm" href="{% url 'add_blog' %}">
+                                <i class="fas fa-plus mr-1"></i> Add Blog
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item mt-3 mt-lg-0 ml-lg-2">
+                            <a class="btn btn-outline-info btn-sm btn-rounded px-4" href="{% url 'see_blog' %}">
+                                Dashboard
+                            </a>
+                        </li>
+
+                        <li class="nav-item mt-3 mt-lg-0 ml-lg-2">
+                            <a class="btn btn-outline-danger btn-sm btn-rounded px-4" href="{% url 'logout_view' %}">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </li>
+
+                    {% else %}
+                        
+                        <li class="nav-item mt-3 mt-lg-0 ml-lg-2">
+                            <a class="btn btn-link text-dark font-weight-bold" href="{% url 'login_view'%}">Login</a>
+                        </li>
+                        
+                        <li class="nav-item mt-3 mt-lg-0 ml-lg-2">
+                            <a class="btn btn-warning text-white btn-sm btn-rounded px-4 shadow-sm" href="{% url 'register_view'%}">
+                                Get Started
+                            </a>
+                        </li>
+
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+      </nav>
+    </header>
+   
+    <div class="container mt-3">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm border-0" role="alert">
+                {% if message.tags == 'success' %}
+                    <i class="fas fa-check-circle mr-2"></i>
+                {% elif message.tags == 'danger' %}
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                {% endif %}
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    {% block start %}
+    {% endblock %}
+
+    <footer class="position-relative z-index-10 d-print-none py-4 mt-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-left">
+                    <p class="mb-0 small opacity-70">&copy; 2026 Sufill Fullstack Dev. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-right mt-3 mt-md-0">
+                    <a href="#" class="text-white mx-2"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-white mx-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white mx-2"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
